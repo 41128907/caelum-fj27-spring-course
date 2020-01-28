@@ -3,17 +3,14 @@ package br.com.alura.forum.repository;
 import java.time.Instant;
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.lang.Nullable;
 
 import br.com.alura.forum.domain.Category;
 import br.com.alura.forum.domain.topic.Topic;
+import br.com.alura.forum.dto.TopicOutputDto;
 
 public interface TopicRepository extends Repository<Topic, Long>, JpaSpecificationExecutor<Topic>{
 	
@@ -52,5 +49,8 @@ public interface TopicRepository extends Repository<Topic, Long>, JpaSpecificati
 			+ "JOIN subcategory.category category "
 			+ "WHERE category = :category AND topic.status = 'NOT_ANSWERED'")
 	int countUnansweredTopicsByCategory(@Param("category") Category category);
+
+
+	Topic save(Topic topic);
 	
 }
