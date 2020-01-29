@@ -1,14 +1,21 @@
 package br.com.alura.forum.dto;
 
 import java.time.Instant;
-
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import br.com.alura.forum.domain.topic.Topic;
 import br.com.alura.forum.domain.topic.TopicStatus;
 
 public class TopicOutputDto {
 	
+	@NotBlank
+	@Size(min=2, max=5)
 	private Long id;
+	@NotBlank
+	@Size(min=2, max=15)
 	private String shortDescription;
+	@NotBlank
+	@Size(min=2, max=15)
 	private String content;
 	private TopicStatus topicStatus;
 	private int numberOfResponses;

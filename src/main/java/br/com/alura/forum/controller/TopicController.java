@@ -1,8 +1,7 @@
 package br.com.alura.forum.controller;
 
 import java.util.List;
-
-
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import br.com.alura.forum.controller.dto.input.NewTopicInputDto;
 import br.com.alura.forum.controller.dto.input.TopicSearchInputDto;
 import br.com.alura.forum.domain.User;
@@ -27,7 +25,6 @@ import br.com.alura.forum.dto.DashboardDto;
 import br.com.alura.forum.dto.TopicBriefOutputDto;
 import br.com.alura.forum.dto.TopicOutputDto;
 import br.com.alura.forum.exception.ResourceNotFoundException;
-import br.com.alura.forum.repository.CourseRepository;
 import br.com.alura.forum.service.DashboardService;
 import br.com.alura.forum.service.TopicService;
 
@@ -38,12 +35,9 @@ public class TopicController {
 	@Autowired
 	private TopicService topicService;
 	@Autowired
-	private CourseRepository courseRepository;
-	@Autowired
 	private DashboardService dasboardService;
 
 	@ResponseStatus(HttpStatus.OK)
-	//@GetMapping(value = "/api/topics", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Page<TopicBriefOutputDto> listTopics(TopicSearchInputDto topicSearch, 
 			@PageableDefault(sort="creationInstant", direction = Sort.Direction.DESC) Pageable pageable) {
 		Specification<Topic> topicSearchSpecification = topicSearch.build();
@@ -66,7 +60,9 @@ public class TopicController {
 	
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
-	public TopicOutputDto createTopic(@RequestBody NewTopicInputDto newTopicDto, @AuthenticationPrincipal User user) {
+	public TopicOutputDto createTopic(@Valid @RequestBody NewTopicInputDto newTopicDto, @AuthenticationPrincipal User user) {
 		return topicService.createTopic(newTopicDto, user);
 	}
+	
+	
 }
