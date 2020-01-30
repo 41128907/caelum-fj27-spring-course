@@ -1,11 +1,12 @@
 package br.com.alura.forum.repository;
 
+import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.repository.Repository;
 import br.com.alura.forum.domain.Course;
 
-public interface CourseRepository extends Repository<Course, Long>, JpaSpecificationExecutor<Course>{
+public interface CourseRepository extends JpaRepository<Course, Long>, JpaSpecificationExecutor<Course>{
 	
-	Course findByName(String courseName);
+	Optional<Course> findByName(String courseName);
 	
 }

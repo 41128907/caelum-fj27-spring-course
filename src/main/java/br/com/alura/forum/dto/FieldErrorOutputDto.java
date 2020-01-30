@@ -6,27 +6,23 @@ public class FieldErrorOutputDto {
 	
 	private String field;
 	private String message;
-
-	public FieldErrorOutputDto(String field, String defaultMessage) {
-		this.field = field;  
-		this.message = defaultMessage;
+	
+	public FieldErrorOutputDto(String field, String message) {
+		this.field = field;
+		this.message = message;
 	}
 	
-	public FieldErrorOutputDto(FieldError error) {
-		this.field = error.getField();  
-		this.message = error.getDefaultMessage();
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
+	public FieldErrorOutputDto(FieldError fieldError) {
+		this.field = fieldError.getField();
+		this.message = fieldError.getDefaultMessage();
 	}
 
 	public String getField() {
 		return field;
+	}
+
+	public String getMessage() {
+		return message;
 	}
 
 }

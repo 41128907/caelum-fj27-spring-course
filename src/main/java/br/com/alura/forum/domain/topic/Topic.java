@@ -1,4 +1,5 @@
 package br.com.alura.forum.domain.topic;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,35 +26,36 @@ import org.springframework.util.Assert;
 public class Topic {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String shortDescription;
-	
+
 	@Lob
 	private String content;
-	
+
 	private Instant creationInstant = Instant.now();
 	private Instant lastUpdate = Instant.now();
-	
+
 	@Enumerated(EnumType.STRING)
 	private TopicStatus status = TopicStatus.NOT_ANSWERED;
 
 	@ManyToOne
 	private User owner;
-	
+
 	@ManyToOne
 	private Course course;
-	
+
 	@OneToMany(mappedBy = "topic")
 	@LazyCollection(LazyCollectionOption.EXTRA)
 	private List<Answer> answers = new ArrayList<>();
-	
+
 	/**
 	 * @deprecated
 	 */
-	public Topic() {}
-	
+	public Topic() {
+	}
+
 	public Topic(String shortDescription, String content, User owner, Course course) {
 		super();
 		this.shortDescription = shortDescription;
@@ -69,11 +71,11 @@ public class Topic {
 	public String getShortDescription() {
 		return shortDescription;
 	}
-	
+
 	public String getContent() {
 		return content;
 	}
-	
+
 	public Instant getCreationInstant() {
 		return creationInstant;
 	}
@@ -132,10 +134,5 @@ public class Topic {
 
 	public void close() {
 		this.status.close(this);
-	}
-
-	public String getAll() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
