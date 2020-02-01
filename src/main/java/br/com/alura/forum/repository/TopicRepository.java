@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import br.com.alura.forum.domain.Category;
+import br.com.alura.forum.domain.OpenTopicByCategory;
 import br.com.alura.forum.domain.User;
 import br.com.alura.forum.domain.topic.Topic;
 
@@ -35,6 +36,18 @@ public interface TopicRepository extends JpaRepository<Topic, Long>, JpaSpecific
 
 	//Topic findById(Long id);
 	
+	/**
+	 * Constructor expressions JPQL
+	 * @return a list of instances of OpenTopicByCategory
+	 */
+	@Query("select new br.com.alura.forum.domain.OpenTopicByCategory(" +
+			"t.course.subcategory.category.name as categoryName, " +
+			"count(t) as topicCount, " +
+			"now() as instant) from Topic t " +
+			"where t.status = 'NOT_ANSWERED' " +
+			"group by t.course.subcategory.category")
+	List<OpenTopicByCategory> findOpenTopicByCategory();
+
 	
 
 }

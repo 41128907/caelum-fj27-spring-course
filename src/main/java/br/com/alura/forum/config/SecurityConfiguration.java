@@ -5,11 +5,10 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,10 +21,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import br.com.alura.forum.security.jwt.TokenManager;
 import br.com.alura.forum.service.UserService;
 
+@Order(2)
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -33,12 +32,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
 	private TokenManager tokenManager;
-
-	public SecurityConfiguration(TokenManager tokenManager) {
-		this.tokenManager = tokenManager;
-	}
-
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -47,8 +42,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-		//.antMatchers(HttpMethod.GET, "/api/topics/**").permitAll()
+		http.antMatcher("/api/**")
+		.authorizeRequests()
+		//.antMatchers(HttpMethod.GET, "/admin/reports/**").permitAll()
 		.antMatchers("/api/auth/**").permitAll()
 		.anyRequest().authenticated()
 		.and()
@@ -68,7 +64,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/**.html", "/v2/api-docs", "/webjars/**", "/configuration/**",
-				"/swagger-resources/**");
+				"/swagger-resources/**", "/css/**", "/**.ico", "/js/**");
 
 	}
 	
